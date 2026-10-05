@@ -3,10 +3,6 @@ from django.db import models
 class SiteSetting(models.Model):
     site_name = models.CharField(max_length=200, default="My Portfolio")
     banner_image = models.ImageField(upload_to='banner/', blank=True, null=True)
-    banner_text = models.TextField(
-        default="Welcome to my portfolio • Explore my work • Let's create something amazing",
-        help_text="Text that scrolls across the banner. Use • to separate phrases."
-    )
     profile_image = models.ImageField(upload_to='profile/', blank=True, null=True, help_text="Square profile image shown at the top right of the banner")
     about_background = models.ImageField(upload_to='about_bg/', blank=True, null=True, help_text="Background image for the About section")
     email = models.EmailField(blank=True)

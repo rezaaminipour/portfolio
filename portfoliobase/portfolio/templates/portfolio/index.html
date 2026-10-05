@@ -113,36 +113,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ── Scrolling Text ── */
-        .scrolling-wrapper {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
-            padding: 0.75rem 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid rgba(255,255,255,0.06);
-        }
-        .scrolling-text {
-            display: flex;
-            white-space: nowrap;
-            animation: scrollMarquee 30s linear infinite;
-        }
-        .scrolling-text span {
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.6);
-            padding-right: 4rem;
-        }
-        @keyframes scrollMarquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
         /* ── Section Common ── */
         section {
             max-width: 1200px;
@@ -542,14 +512,6 @@
         </div>
         <p class="banner-sub">Creative Developer & Designer</p>
     </div>
-    {% if settings.banner_text %}
-    <div class="scrolling-wrapper">
-        <div class="scrolling-text">
-            <span>{{ settings.banner_text }} • {{ settings.banner_text }} •</span>
-            <span>{{ settings.banner_text }} • {{ settings.banner_text }} •</span>
-        </div>
-    </div>
-    {% endif %}
 </div>
 
 {% if employment_history %}
