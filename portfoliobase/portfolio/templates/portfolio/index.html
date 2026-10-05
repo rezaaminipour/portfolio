@@ -318,6 +318,8 @@
         .social-card .fa-facebook-f { color: #1877F2; }
         .social-card .fa-dribbble { color: #EA4C89; }
         .social-card .fa-behance { color: #1769FF; }
+        .social-card .fa-phone { color: #34c759; }
+        .social-card .fa-envelope { color: #4facfe; }
         .social-card .platform-name {
             font-weight: 500;
         }
@@ -598,26 +600,31 @@
 
 <section id="contact" class="contact-section">
     <h2 class="section-title">Contact <span>Me</span></h2>
-    {% if settings.phone or settings.email %}
-    <div class="contact-details">
+    <div class="social-grid">
         {% if settings.phone %}
-        <a class="contact-chip" href="tel:{{ settings.phone }}"><i class="fas fa-phone"></i> {{ settings.phone }}</a>
+        <a href="tel:{{ settings.phone }}" class="social-card">
+            <i class="fas fa-phone"></i>
+            <span class="platform-name">Phone</span>
+            <span class="handle">{{ settings.phone }}</span>
+        </a>
         {% endif %}
         {% if settings.email %}
-        <a class="contact-chip" href="mailto:{{ settings.email }}"><i class="fas fa-envelope"></i> {{ settings.email }}</a>
+        <a href="mailto:{{ settings.email }}" class="social-card">
+            <i class="fas fa-envelope"></i>
+            <span class="platform-name">Email</span>
+            <span class="handle">{{ settings.email }}</span>
+        </a>
         {% endif %}
-    </div>
-    {% endif %}
-    <div class="social-grid">
         {% for link in social_links %}
         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-card" style="transition-delay:{{ forloop.counter0|stringformat:"i" }}00ms">
             <i class="fab fa-{{ link.platform }}"></i>
             <span class="platform-name">{{ link.get_platform_display }}</span>
             {% if link.username %}<span class="handle">@{{ link.username }}</span>{% endif %}
         </a>
-        {% empty %}
-        <p style="color:rgba(255,255,255,0.4)">No social links configured yet. Add them in the admin panel.</p>
         {% endfor %}
+        {% if not settings.phone and not settings.email and not social_links %}
+        <p style="color:rgba(255,255,255,0.4)">No contact links configured yet. Add them in the admin panel.</p>
+        {% endif %}
     </div>
 </section>
 
