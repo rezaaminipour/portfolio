@@ -10,6 +10,7 @@ class SiteSetting(models.Model):
     profile_image = models.ImageField(upload_to='profile/', blank=True, null=True, help_text="Square profile image shown at the top right of the banner")
     about_background = models.ImageField(upload_to='about_bg/', blank=True, null=True, help_text="Background image for the About section")
     email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=30, blank=True, help_text="Phone number shown in the Contact section")
 
     class Meta:
         verbose_name = "Site Setting"
@@ -36,6 +37,20 @@ class EmploymentHistory(models.Model):
 
     def __str__(self):
         return f"{self.job_title} at {self.company}"
+
+
+class Skill(models.Model):
+    name = models.CharField(max_length=100)
+    level = models.PositiveIntegerField(default=50, help_text="Proficiency percentage from 0 to 100")
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = "Skill"
+        verbose_name_plural = "Skills"
+
+    def __str__(self):
+        return f"{self.name} ({self.level}%)"
 
 
 class SocialLink(models.Model):

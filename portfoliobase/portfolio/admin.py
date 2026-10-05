@@ -1,9 +1,15 @@
 from django.contrib import admin
-from .models import SiteSetting, SocialLink, EmploymentHistory
+from .models import SiteSetting, SocialLink, EmploymentHistory, Skill
 
 @admin.register(SiteSetting)
 class SiteSettingAdmin(admin.ModelAdmin):
     list_display = ['site_name']
+
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ['name', 'level', 'order']
+    list_editable = ['level', 'order']
 
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):

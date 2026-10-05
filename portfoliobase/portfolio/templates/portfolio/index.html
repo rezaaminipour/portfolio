@@ -329,11 +329,25 @@
         /* ── Footer ── */
         footer {
             text-align: center;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             color: rgba(255,255,255,0.3);
             font-size: 0.85rem;
             border-top: 1px solid rgba(255,255,255,0.04);
         }
+        .footer-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .footer-nav a {
+            color: rgba(255,255,255,0.55);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .footer-nav a:hover { color: #fff; }
 
         /* ── Particles (decorative dots) ── */
         .particle {
@@ -352,8 +366,127 @@
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
 
+        /* ── Navbar ── */
+        html { scroll-behavior: smooth; }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 1.5rem;
+            background: rgba(10,10,10,0.55);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: background 0.3s ease;
+        }
+        .navbar.scrolled { background: rgba(10,10,10,0.9); }
+        .nav-brand {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.5rem 0.85rem;
+            border-radius: 999px;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* ── Skills ── */
+        .skills-section { padding: 6rem 2rem; }
+        .skills-list {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .skill {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .skill.visible { opacity: 1; transform: translateY(0); }
+        .skill-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.55rem;
+            font-size: 0.95rem;
+        }
+        .skill-name { font-weight: 600; }
+        .skill-level { color: rgba(255,255,255,0.5); font-variant-numeric: tabular-nums; }
+        .skill-bar {
+            height: 10px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+            transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ── Contact ── */
+        .contact-section { padding: 6rem 2rem; }
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+        .contact-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.85rem 1.4rem;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .contact-chip:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+        .contact-chip i { color: #4facfe; }
+
+        /* anchor offset for the fixed navbar */
+        section[id] { scroll-margin-top: 82px; }
+
         /* ── Responsive ── */
         @media (max-width: 640px) {
+            .navbar { padding: 0.7rem 1rem; }
+            .nav-brand { display: none; }
+            .nav-links { width: 100%; justify-content: center; gap: 0.15rem; }
+            .nav-links a { padding: 0.45rem 0.6rem; font-size: 0.82rem; }
             section { padding: 3rem 1.25rem; }
             .social-card { width: 100%; justify-content: center; }
             .banner { height: 70vh; min-height: 440px; }
@@ -377,7 +510,17 @@
 </head>
 <body>
 
-<div class="banner">
+<nav class="navbar" id="navbar">
+    <a href="#top" class="nav-brand">{{ settings.site_name|default:"Portfolio" }}</a>
+    <div class="nav-links">
+        <a href="#top">Home</a>
+        {% if employment_history %}<a href="#employment">Experience</a>{% endif %}
+        {% if skills %}<a href="#skills">Skills</a>{% endif %}
+        <a href="#contact">Contact Me</a>
+    </div>
+</nav>
+
+<div class="banner" id="top">
     {% if settings.banner_image %}
     <img src="{{ settings.banner_image.url }}" alt="Banner">
     {% else %}
@@ -406,7 +549,7 @@
 </div>
 
 {% if employment_history %}
-<section class="about-section"{% if settings.about_background %} style="background-image: url('{{ settings.about_background.url }}')"{% endif %}>
+<section id="employment" class="about-section"{% if settings.about_background %} style="background-image: url('{{ settings.about_background.url }}')"{% endif %}>
     <div class="section-inner">
         <h2 class="section-title">Employment <span>History</span></h2>
         <div class="job-list">
@@ -434,8 +577,35 @@
 </section>
 {% endif %}
 
-<section style="padding: 6rem 2rem;">
-    <h2 class="section-title">Connect <span>With Me</span></h2>
+{% if skills %}
+<section id="skills" class="skills-section">
+    <h2 class="section-title">My <span>Skills</span></h2>
+    <div class="skills-list">
+        {% for skill in skills %}
+        <div class="skill">
+            <div class="skill-head">
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-level">{{ skill.level }}%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-level="{{ skill.level }}"></div></div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section id="contact" class="contact-section">
+    <h2 class="section-title">Contact <span>Me</span></h2>
+    {% if settings.phone or settings.email %}
+    <div class="contact-details">
+        {% if settings.phone %}
+        <a class="contact-chip" href="tel:{{ settings.phone }}"><i class="fas fa-phone"></i> {{ settings.phone }}</a>
+        {% endif %}
+        {% if settings.email %}
+        <a class="contact-chip" href="mailto:{{ settings.email }}"><i class="fas fa-envelope"></i> {{ settings.email }}</a>
+        {% endif %}
+    </div>
+    {% endif %}
     <div class="social-grid">
         {% for link in social_links %}
         <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer" class="social-card" style="transition-delay:{{ forloop.counter0|stringformat:"i" }}00ms">
@@ -449,8 +619,14 @@
     </div>
 </section>
 
-<footer style="padding: 2rem;">
-    &copy; {% now "Y" %} {{ settings.site_name|default:"Portfolio" }}. All rights reserved.
+<footer>
+    <div class="footer-nav">
+        <a href="#top">Home</a>
+        {% if employment_history %}<a href="#employment">Experience</a>{% endif %}
+        {% if skills %}<a href="#skills">Skills</a>{% endif %}
+        <a href="#contact">Contact Me</a>
+    </div>
+    <div>&copy; {% now "Y" %} {{ settings.site_name|default:"Portfolio" }}. All rights reserved.</div>
 </footer>
 
 <script>
@@ -472,13 +648,35 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    const fill = entry.target.querySelector('.skill-fill');
+                    if (fill && fill.dataset.level) {
+                        fill.style.width = fill.dataset.level + '%';
+                    }
                 }
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.section-title, .about-text, .social-card, .job-item').forEach(el => {
+        document.querySelectorAll('.section-title, .about-text, .social-card, .job-item, .skill').forEach(el => {
             observer.observe(el);
         });
+
+        // ── Navbar scroll state + active link ──
+        const navbar = document.getElementById('navbar');
+        const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+        const sections = navLinks
+            .map(a => document.querySelector(a.getAttribute('href')))
+            .filter(Boolean);
+
+        function onScroll() {
+            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 40);
+            let current = '#top';
+            sections.forEach(sec => {
+                if (window.scrollY >= sec.offsetTop - 120) current = '#' + sec.id;
+            });
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === current));
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
 
         // ── Parallax on banner ──
         window.addEventListener('scroll', () => {
